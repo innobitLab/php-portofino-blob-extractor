@@ -3,7 +3,7 @@
     "description": ".",
     "autoload": {
         "psr-0": {
-            "XAPISdk": "src/"
+            "PortofinoBlobExtractor": "src/"
         }
     },
     "require-dev": {
