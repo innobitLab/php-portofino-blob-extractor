@@ -31,4 +31,23 @@ content.type=image/jpeg';
         $this->assertEquals('image/jpeg', $propertiesProvider->get('content.type'));
     }
 
+    public function test_can_extract_blob() {
+        $blobExtractor = new \PortofinoBlobExtractor\BlobExtractor(__DIR__ . '/testData');
+        $blobMetadata = $blobExtractor->getBlobMetadata('15r7d9lusfjua0pqv2nxbxr2h');
+
+        $this->assertInstanceOf('\PortofinoBlobExtractor\BlobMetadata', $blobMetadata);
+        $this->assertEquals('bianco del pradel_b.jpg', $blobMetadata->getFilename());
+        $this->assertEquals('2013-07-29T14\:52\:31.840+02\:00', $blobMetadata->getCreateTimestamp());
+        $this->assertEquals(87828, $blobMetadata->getSizeBytes());
+        $this->assertEquals('15r7d9lusfjua0pqv2nxbxr2h', $blobMetadata->getCode());
+        $this->assertEquals('image/jpeg', $blobMetadata->getContentType());
+    }
+
+    public function test_can_read_blob_data() {
+        $blobExtractor = new \PortofinoBlobExtractor\BlobExtractor(__DIR__ . '/testData');
+        $blobData = $blobExtractor->getBlobData('15r7d9lusfjua0pqv2nxbxr2h');
+        $blobMetadata = $blobExtractor->getBlobMetadata('15r7d9lusfjua0pqv2nxbxr2h');
+        $this->assertEquals($blobMetadata->getSizeBytes(), strlen($blobData));
+    }
+
 }
