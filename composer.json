@@ -1,6 +1,6 @@
 {
     "name": "innobitlab/php-portofino-blob-extractor",
-    "description": ".",
+    "description": "A simple php library for access Portofino 4 blob files and metadata",
     "autoload": {
         "psr-0": {
             "PortofinoBlobExtractor": "src/"
