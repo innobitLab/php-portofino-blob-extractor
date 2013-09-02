@@ -1,0 +1,19 @@
+{
+    "name": "innobitlab/php-portofino-blob-extractor",
+    "description": ".",
+    "autoload": {
+        "psr-0": {
+            "XAPISdk": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gabriele Tondi",
+            "email": "g.tondi@teammosaico.it"
+        }
+    ]
+}
