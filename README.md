@@ -18,4 +18,14 @@ Add this to your composer.json file:
     	}
 	}
 
+## Usage ##
 
+    use \PortofinoBlobExtractor\BlobExtractor;
+
+    $blobExtractor = new BlobExtractor('path/to/portofino/blobs/dir');
+
+    // get the blob data bytes
+    $blobData = $blobExtractor->getBlobData('blobcode');
+
+    // get the blob metadata in a easy to use BlobMetadata object
+    $blobMetadata = $blobExtractor->getBlobMetadata('blobcode');
