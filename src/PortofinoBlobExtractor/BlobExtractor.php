@@ -54,7 +54,15 @@ class BlobExtractor {
 
     public function getBlobData($blobCode) {
         $filename = $this->getBlobDataCompleteFilePath($blobCode);
+
+        if (!file_exists($filename))
+            throw new \Exception('file [' . $filename . '] does not exist or I cannot read it');
+
         $handle = fopen($filename, "rb");
+
+        if (!$handle)
+            throw new \Exception('Error opening file [' . $filename . ']');
+
         $contents = fread($handle, filesize($filename));
         fclose($handle);
 

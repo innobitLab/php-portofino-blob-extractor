@@ -50,4 +50,13 @@ content.type=image/jpeg';
         $this->assertEquals($blobMetadata->getSizeBytes(), strlen($blobData));
     }
 
+    /**
+     * @expectedException \Exception
+     */
+    public function test_read_from_wrong_code() {
+        $blobExtractor = new \PortofinoBlobExtractor\BlobExtractor(__DIR__ . '/testData');
+        $blobData = $blobExtractor->getBlobData('you_cannot_find_me');
+        $blobMetadata = $blobExtractor->getBlobMetadata('you_cannot_find_me');
+    }
+
 }
