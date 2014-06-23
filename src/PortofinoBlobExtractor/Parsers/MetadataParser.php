@@ -12,14 +12,13 @@ class MetadataParser
         if (empty($content))
             return array();
 
-        if (!strpos($content, self::FIELD_SEPARATOR))
-            throw new ParseException();
-
         $res = array();
 
         $lines = $this->extractLines($content);
 
         foreach ($lines as $line) {
+            $this->guardFromInvalidLine($line);
+
             $field = $this->extractField($line);
             $res[$field->getName()] = $field->getValue();
         }
@@ -32,9 +31,21 @@ class MetadataParser
         return explode(self::LINE_SEPARATOR, $content);
     }
 
+    private function guardFromInvalidLine($line)
+    {
+        if (!$this->validateLine($line))
+            throw new ParseException();
+    }
+
+    private function validateLine($line)
+    {
+        return strpos($line, self::FIELD_SEPARATOR);
+    }
+
     private function extractField($line)
     {
-        $exploded = explode(self::FIELD_SEPARATOR, $line);
+        $exploded = explode(self::FIELD_SEPARATOR, $line, 2);
         return new Field($exploded[0], $exploded[1]);
     }
+
 }

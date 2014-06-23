@@ -11,6 +11,11 @@ class MetadataParserTest extends PHPUnit_Framework_TestCase
         $this->parser = new MetadataParser();
     }
 
+    private function assertParse($expected, $content)
+    {
+        $this->assertEquals($expected, $this->parser->parse($content));
+    }
+
     public function test_parse_empty_string()
     {
         $this->assertParse(array(), '');
@@ -49,9 +54,22 @@ EOT;
         $this->assertParse($expected, $content);
     }
 
-    private function assertParse($expected, $content)
+    public function test_parse_field_with_separator_contained_in_value()
     {
-        $this->assertEquals($expected, $this->parser->parse($content));
+        $this->assertParse(array('math' => '1 + 2 = 3'), 'math=1 + 2 = 3');
+    }
+
+    /**
+     * @expectedException \PortofinoBlobExtractor\Parsers\ParseException
+     */
+    public function test_parse_multiple_line_with_invalid_one()
+    {
+        $content = <<<EOT
+name=value
+YouCantParseMe
+EOT;
+
+        $this->parser->parse($content);
     }
 }
  
