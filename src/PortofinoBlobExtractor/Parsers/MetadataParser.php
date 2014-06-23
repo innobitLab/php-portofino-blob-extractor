@@ -13,29 +13,36 @@ class MetadataParser
         if (empty($content))
             return array();
 
-        $res = array();
-
         $lines = $this->extractLines($content);
-
-        foreach ($lines as $line) {
-            if ($this->isComment($line))
-                continue;
-
-            $this->guardFromInvalidLine($line);
-
-            $field = $this->extractField($line);
-
-            $this->guardFromDuplicatedKey($field->getName(), $res);
-
-            $res[$field->getName()] = $field->getValue();
-        }
-
-        return $res;
+        return $this->parseLines($lines);
     }
 
     private function extractLines($content)
     {
         return explode(self::LINE_SEPARATOR, $content);
+    }
+
+    private function parseLines(array $lines)
+    {
+        $res = array();
+
+        foreach ($lines as $line) {
+            if ($this->isComment($line))
+                continue;
+
+            $res = array_merge($res, $this->parseSingleLine($line, $res));
+        }
+
+        return $res;
+    }
+
+    private function parseSingleLine($line, array $res) {
+        $this->guardFromInvalidLine($line);
+
+        $field = $this->extractField($line);
+        $this->guardFromDuplicatedKey($field->getName(), $res);
+
+        return array($field->getName() => $field->getValue());
     }
 
     private function isComment($line)
