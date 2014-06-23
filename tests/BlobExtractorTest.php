@@ -58,7 +58,6 @@ content.type=image/jpeg';
     }
 
     public function test_can_read_properties_with_parentheses_in_filename_from_memory() {
-        return;
         $content = '#Blob metadata
 #Mon Jul 29 14:52:31 CEST 2013
 filename=bianco del pradel_b (2).jpg
