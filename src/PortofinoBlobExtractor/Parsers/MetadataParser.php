@@ -6,6 +6,7 @@ class MetadataParser
 {
     const FIELD_SEPARATOR = '=';
     const LINE_SEPARATOR = "\n";
+    const COMMENT_IDENTIFIER = '#';
 
     public function parse($content)
     {
@@ -17,9 +18,15 @@ class MetadataParser
         $lines = $this->extractLines($content);
 
         foreach ($lines as $line) {
+            if ($this->isComment($line))
+                continue;
+
             $this->guardFromInvalidLine($line);
 
             $field = $this->extractField($line);
+
+            $this->guardFromDuplicatedKey($field->getName(), $res);
+
             $res[$field->getName()] = $field->getValue();
         }
 
@@ -29,6 +36,11 @@ class MetadataParser
     private function extractLines($content)
     {
         return explode(self::LINE_SEPARATOR, $content);
+    }
+
+    private function isComment($line)
+    {
+        return strpos($line, self::COMMENT_IDENTIFIER) === 0;
     }
 
     private function guardFromInvalidLine($line)
@@ -48,4 +60,9 @@ class MetadataParser
         return new Field($exploded[0], $exploded[1]);
     }
 
+    private function guardFromDuplicatedKey($key, array $res)
+    {
+        if (array_key_exists($key, $res))
+            throw new KeyAlreadyExistsException(sprintf('Key %s already exists', $key));
+    }
 }

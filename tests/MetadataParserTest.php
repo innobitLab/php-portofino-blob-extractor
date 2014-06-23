@@ -71,5 +71,35 @@ EOT;
 
         $this->parser->parse($content);
     }
+
+    public function test_parse_content_with_comments()
+    {
+        $content = <<<EOT
+#this line is a comment
+field=value
+#another comment!
+otherField=otherValue
+EOT;
+
+        $expected = array(
+            'field' => 'value',
+            'otherField' => 'otherValue'
+        );
+
+        $this->assertParse($expected, $content);
+    }
+
+    /**
+     * @expectedException \PortofinoBlobExtractor\Parsers\KeyAlreadyExistsException
+     */
+    public function test_parse_same_key_twice()
+    {
+        $content = <<<EOT
+field=value
+field=otherValue
+EOT;
+
+        $this->parser->parse($content);
+    }
 }
  
