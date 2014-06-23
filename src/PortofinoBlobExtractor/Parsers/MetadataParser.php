@@ -30,6 +30,9 @@ class MetadataParser
             if ($this->isComment($line))
                 continue;
 
+            if (empty($line))
+                continue;
+
             $res = array_merge($res, $this->parseSingleLine($line, $res));
         }
 

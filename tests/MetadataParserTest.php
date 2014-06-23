@@ -101,5 +101,21 @@ EOT;
 
         $this->parser->parse($content);
     }
+
+    public function test_empty_lines_are_skipped()
+    {
+        $content = <<<EOT
+field=value
+
+otherField=otherValue
+EOT;
+
+        $expected = array(
+            'field' => 'value',
+            'otherField' => 'otherValue'
+        );
+
+        $this->assertParse($expected, $content);
+    }
 }
  
