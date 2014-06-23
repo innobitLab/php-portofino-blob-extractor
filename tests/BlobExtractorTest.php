@@ -1,8 +1,6 @@
 <?php
 
-require_once 'bootstrap.php';
-
-class BlobExtractorTests extends PHPUnit_Framework_TestCase {
+class BlobExtractorTest extends PHPUnit_Framework_TestCase {
 
     public function test_can_read_properties_from_memory() {
         $content = '#Blob metadata
@@ -57,6 +55,20 @@ content.type=image/jpeg';
         $blobExtractor = new \PortofinoBlobExtractor\BlobExtractor(__DIR__ . '/testData');
         $blobData = $blobExtractor->getBlobData('you_cannot_find_me');
         $blobMetadata = $blobExtractor->getBlobMetadata('you_cannot_find_me');
+    }
+
+    public function test_can_read_properties_with_parentheses_in_filename_from_memory() {
+        $content = '#Blob metadata
+#Mon Jul 29 14:52:31 CEST 2013
+filename=bianco del pradel_b (2).jpg
+create.timestamp=2013-07-29T14\:52\:31.840+02\:00
+size=87828
+code=15r7d9lusfjua0pqv2nxbxr2h
+content.type=image/jpeg';
+
+        $propertiesProvider = new \PortofinoBlobExtractor\PropertiesProviders\InMemoryPropertiesProvider($content);
+
+        $this->assertEquals('bianco del pradel_b (2).jpg', $propertiesProvider->get('filename'));
     }
 
 }
