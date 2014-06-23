@@ -1,8 +1,6 @@
 <?php
 
-require_once 'bootstrap.php';
-
-class BlobExtractorTests extends PHPUnit_Framework_TestCase {
+class BlobExtractorTest extends PHPUnit_Framework_TestCase {
 
     public function test_can_read_properties_from_memory() {
         $content = '#Blob metadata
